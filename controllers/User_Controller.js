@@ -29,7 +29,7 @@ exports.getById=(async (req, res) => {
 
 // Soft Delete
 exports.delete=(async(req, res) => {
-  users.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
+  users.findByIdAndUpdate(req.body.id, req.body, (err, doc) => {
     ResponseService.generalPayloadResponse(err, doc, res, "user deleted successfully");
   });
 });
