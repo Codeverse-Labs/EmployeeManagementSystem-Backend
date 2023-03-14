@@ -45,6 +45,7 @@ exports.login = async function (req, res) {
   return res.json({ status: 400, msg: "Invalid Password" });
 }
 
+//get user details
 exports.getUserDetails = async (req, res) => {
   const { token } = req.body;
   console.log(token);
