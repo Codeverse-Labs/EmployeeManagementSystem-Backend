@@ -14,7 +14,7 @@ exports.signUp = async function (req, res) {
 
   const oldUser = await User.findOne({ email });
   if (oldUser) {
-    return res.json({status: 404, msg: "user already exists" });
+    return res.json({status: 500, msg: "user already exists" });
   }else{
     let user = { name, email, password: encryptedPassword, }
 
