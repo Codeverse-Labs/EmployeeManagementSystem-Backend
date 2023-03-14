@@ -14,10 +14,11 @@ exports.signUp = async function (req, res) {
 
   const oldUser = await User.findOne({ email });
   if (oldUser) {
-    return res.json({status: 500, msg: "user already exists" });
+    return res.json({status: 404, msg: "user already exists" });
   }else{
     let user = { name, email, password: encryptedPassword, }
 
+    console.log(user);
     new User(user).save((err, doc) => {
       ResponseService.generalPayloadResponse(err, doc, res);
     });
@@ -45,7 +46,6 @@ exports.login = async function (req, res) {
   return res.json({ status: 400, msg: "Invalid Password" });
 }
 
-//get user details
 exports.getUserDetails = async (req, res) => {
   const { token } = req.body;
   console.log(token);
