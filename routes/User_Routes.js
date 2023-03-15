@@ -8,15 +8,24 @@ const CheckAuth = require('../middleware/AuthMiddleware')
 const userController = require('../controllers/User_Controller')
 
 // Update
-router.put("/:id",CheckAuth, async (req, res) => userController.update(req, res));
+router.put("/:id", async (req, res) => userController.update(req, res));
 
 // Delete
-router.put("/",CheckAuth, async (req, res) =>userController.delete(req, res));
+router.put("/delete/:id",CheckAuth, async (req, res) =>userController.delete(req, res));
 
 // Get by id
-router.get("/:id",CheckAuth, async (req, res) => userController.getById(req, res));
+router.get("/:id", async (req, res) => userController.getById(req, res));
 
 // Get all
-router.get("/",CheckAuth, async (req, res) => userController.getAll(req, res));
+router.get("/", async (req, res) => userController.getAll(req, res));
+
+// Get all by designation
+router.get("/designation/:designation", async (req, res) => userController.getAllByDesignation(req, res));
+
+// Get all by technology
+router.get("/technology/:technology", async (req, res) => userController.getAllByTechnology(req, res));
+
+// search user by name
+router.get('/searchTerm/:searchTerm', userController.searchAllByName);
 
 module.exports = router;
