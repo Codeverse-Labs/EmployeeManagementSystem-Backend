@@ -17,10 +17,6 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    assigned: {
-        type: boolean,
-        default: false
-    },
 },{ timestamps: true });
 
 
