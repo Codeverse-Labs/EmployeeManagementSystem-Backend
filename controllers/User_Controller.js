@@ -43,7 +43,7 @@ exports.getAllByDesignation = async function (req, res) {
 
   const totalPages = Math.ceil(await users.countDocuments({ designation: designation }) / limit);
 
-   posts.find({ categoryis: categoryId }, (err, doc) => {
+   users.find({ designation: designation }, (err, doc) => {
     const newPayload = {
       docs: doc,
       totalPages: totalPages
@@ -66,7 +66,7 @@ exports.getAllByDesignation = async function (req, res) {
 
   const totalPages = Math.ceil(await users.countDocuments({ technologies:{ $elemMatch: { item: technology}} }) / limit);
 
-   posts.find({ technologies:{ $elemMatch: { item: technology}}}, (err, doc) => {
+   users.find({ technologies:{ $elemMatch: { item: technology}}}, (err, doc) => {
     const newPayload = {
       docs: doc,
       totalPages: totalPages
@@ -84,7 +84,7 @@ exports.searchAllByName = async function (req, res) {
   const page = req.query.page ? parseInt(req.query.page) : 0;
 
   const searchTerm = req.params.searchTerm;
-  const result = posts.find({ name: { $regex: searchTerm, $options: 'i' } }, (err, doc) => {
+  users.find({ name: { $regex: searchTerm, $options: 'i' } }, (err, doc) => {
     ResponseService.generalPayloadResponse(err, doc, res);
   })
     .sort({ name: -1 })
