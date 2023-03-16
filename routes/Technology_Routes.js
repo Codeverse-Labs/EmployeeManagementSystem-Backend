@@ -4,7 +4,7 @@ const router = app.Router();
 // Auth middleware
 const CheckAuth = require('../middleware/AuthMiddleware')
 
-// Forum controller
+// Technology controller
 const technologyController = require('../controllers/Technology_Controller');
 
 // Create

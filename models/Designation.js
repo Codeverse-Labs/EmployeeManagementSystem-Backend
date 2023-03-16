@@ -13,10 +13,6 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    users: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
 },{ timestamps: true });
 
 module.exports = mongoose.model('Designation', Schema);

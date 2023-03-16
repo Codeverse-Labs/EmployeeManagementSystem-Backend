@@ -33,7 +33,11 @@ const Schema = new mongoose.Schema({
         type: Date,
         required: [true, "Leave To cannot be empty"],
     },
-    isfullday: {
+    isFullday: {
+        type: Boolean,
+        default: false,
+    },
+    isOneday: {
         type: Boolean,
         default: false,
     },

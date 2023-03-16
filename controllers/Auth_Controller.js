@@ -18,7 +18,6 @@ exports.signUp = async function (req, res) {
   }else{
     let user = { name, email, password: encryptedPassword, }
 
-    console.log(user);
     new User(user).save((err, doc) => {
       ResponseService.generalPayloadResponse(err, doc, res);
     });
