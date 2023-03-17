@@ -56,7 +56,7 @@ exports.getAllByDesignation = async function (req, res) {
 }
 
 //get all by technology
-exports.getAllByDesignation = async function (req, res) {
+exports.getAllByTechnology = async function (req, res) {
   const technology = req.params.technology;
 
   // Pagination parameters
@@ -64,9 +64,9 @@ exports.getAllByDesignation = async function (req, res) {
   const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
-  const totalPages = Math.ceil(await users.countDocuments({ technologies:{ $elemMatch: { item: technology}} }) / limit);
+  const totalPages = Math.ceil(await users.countDocuments({ technologies: technology}) / limit);
 
-   users.find({ technologies:{ $elemMatch: { item: technology}}}, (err, doc) => {
+   users.find({technologies: technology}, (err, doc) => {
     const newPayload = {
       docs: doc,
       totalPages: totalPages
