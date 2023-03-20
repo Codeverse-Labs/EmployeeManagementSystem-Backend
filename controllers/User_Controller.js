@@ -83,9 +83,16 @@ exports.searchAllByName = async function (req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : 10;
   const page = req.query.page ? parseInt(req.query.page) : 0;
 
+  
+  const totalPages = Math.ceil(await users.countDocuments({ name: { $regex: searchTerm, $options: 'i' } }) / limit);
+
   const searchTerm = req.params.searchTerm;
   users.find({ name: { $regex: searchTerm, $options: 'i' } }, (err, doc) => {
-    ResponseService.generalPayloadResponse(err, doc, res);
+    const newPayload = {
+      docs: doc,
+      totalPages: totalPages
+    }
+    ResponseService.generalPayloadResponse(err, newPayload, res);
   })
     .sort({ name: -1 })
     .skip(page * limit)
