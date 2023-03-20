@@ -53,7 +53,7 @@ exports.getAll = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
+        .sort({ createdAt: -1 })
         .populate('assignPerson', 'name email imageurl')
         .populate('type', 'name')
         .skip(page * limit)
@@ -80,7 +80,7 @@ exports.getAllByType = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
+        .sort({ createdAt: -1 })
         .populate('assignPerson', 'name email imageurl')
         .populate('type', 'name')
         .skip(page * limit)
@@ -107,7 +107,7 @@ exports.getByUserId = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
+        .sort({ createdAt: -1 })
         .populate('assignPerson', 'name email imageurl')
         .populate('type', 'name')
         .skip(page * limit)
