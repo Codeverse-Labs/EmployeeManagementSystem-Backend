@@ -31,8 +31,8 @@ app.use('/users', require('./routes/User_Routes'));
 app.use('/designation', require('./routes/Designation_Routes'));
 app.use('/assets', require('./routes/Assets_Routes'));
 app.use('/assetsTypes', require('./routes/AssetsType_Routes'));
-// app.use('/leaves', require('./routes/Leaves_Routes'));
-// app.use('/salary', require('./routes/Salary_Routes'));
+app.use('/leaves', require('./routes/Leaves_Routes'));
+app.use('/salary', require('./routes/Salary_Routes'));
 app.use('/technology', require('./routes/Technology_Routes'));
 
 //set port

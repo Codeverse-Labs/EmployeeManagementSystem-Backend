@@ -22,7 +22,9 @@ exports.update = (async (req, res) => {
 exports.getById = (async (req, res) => {
     assets.findById(req.params.id, (err, doc) => {
         ResponseService.generalPayloadResponse(err, doc, res);
-    });
+    })
+    .populate('assignPerson', 'name email imageurl')
+    .populate('type', 'name')
 });
 
 // Delete
@@ -51,10 +53,9 @@ exports.getAll = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
-        .populate('updatedBy', 'name email imageurl')
-        .populate('addedBy', 'name email imageurl')
-        .populate('updatedBy', 'name email imageurl')
+        .sort({ createdAt: -1 })
+        .populate('assignPerson', 'name email imageurl')
+        .populate('type', 'name')
         .skip(page * limit)
         .limit(limit);
 }
@@ -68,8 +69,8 @@ exports.getAllByType = async function (req, res) {
     const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
-    const totalPages = Math.ceil(await assets.countDocuments({ designation: designation }) / limit);
-    const assetsCount = Math.ceil(await assets.countDocuments() );
+    const totalPages = Math.ceil(await assets.countDocuments({ type: type }) / limit);
+    const assetsCount = Math.ceil(await assets.countDocuments({ type: type }) );
 
     assets.find({ type: type }, (err, doc) => {
         const newPayload = {
@@ -79,16 +80,15 @@ exports.getAllByType = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
-        .populate('updatedBy', 'name email imageurl')
-        .populate('addedBy', 'name email imageurl')
-        .populate('updatedBy', 'name email imageurl')
+        .sort({ createdAt: -1 })
+        .populate('assignPerson', 'name email imageurl')
+        .populate('type', 'name')
         .skip(page * limit)
         .limit(limit);
 }
 
-//get all by type
-exports.getAllByType = async function (req, res) {
+//get all by assign person
+exports.getByUserId = async function (req, res) {
     const id = req.params.id;
 
     // Pagination parameters
@@ -97,7 +97,7 @@ exports.getAllByType = async function (req, res) {
 
 
     const totalPages = Math.ceil(await assets.countDocuments({ assignPerson: id }) / limit);
-    const assetsCount = Math.ceil(await assets.countDocuments() );
+    const assetsCount = Math.ceil(await assets.countDocuments({ assignPerson: id }) );
 
     assets.find({ assignPerson: id }, (err, doc) => {
         const newPayload = {
@@ -107,10 +107,9 @@ exports.getAllByType = async function (req, res) {
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
-        .sort({ name: -1 })
-        .populate('updatedBy', 'name email imageurl')
-        .populate('addedBy', 'name email imageurl')
-        .populate('updatedBy', 'name email imageurl')
+        .sort({ createdAt: -1 })
+        .populate('assignPerson', 'name email imageurl')
+        .populate('type', 'name')
         .skip(page * limit)
         .limit(limit);
 }
