@@ -15,7 +15,9 @@ exports.update=(async (req, res) => {
 exports.getById=(async (req, res) => {
   users.findById(req.params.id, (err, doc) => {
     ResponseService.generalPayloadResponse(err, doc, res);
-  });
+  })
+  .populate('designation', 'name')
+  .populate('technologies', 'name')
 });
 
 // Soft Delete
@@ -42,6 +44,8 @@ exports.getAll=(async(req, res) => {
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
     .sort({ name: -1 })
+    .populate('designation', 'name')
+    .populate('technologies', 'name')
     .skip(page * limit)
     .limit(limit);
 });
@@ -65,6 +69,8 @@ exports.getAllByDesignation = async function (req, res) {
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
     .sort({ name: -1 })
+    .populate('designation', 'name')
+    .populate('technologies', 'name')
     .skip(page * limit)
     .limit(limit);
 }
@@ -88,6 +94,8 @@ exports.getAllByTechnology = async function (req, res) {
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
     .sort({ name: -1 })
+    .populate('designation', 'name')
+    .populate('technologies', 'name')
     .skip(page * limit)
     .limit(limit);
 }
@@ -109,6 +117,8 @@ exports.searchAllByName = async function (req, res) {
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
     .sort({ name: -1 })
+    .populate('designation', 'name')
+    .populate('technologies', 'name')
     .skip(page * limit)
     .limit(limit);
 }
