@@ -6,7 +6,8 @@ const Schema = new mongoose.Schema({
         required: [true, "name cannot be empty"],
     },
     type: {
-        type: String,        
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AssetsType',      
         required: [true, "type cannot be empty"],
     },
     serialNumber: {
