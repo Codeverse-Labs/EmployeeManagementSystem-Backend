@@ -19,7 +19,7 @@ const Schema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'user'
+        default: 'pending'
     },
     reportPerson:{
         type: mongoose.Schema.Types.ObjectId,

@@ -32,6 +32,9 @@ exports.login = async function (req, res) {
   if (!user) {
     return res.json({status: 404, msg: "User Not found" });
   }
+  if (user.role=='pending') {
+    return res.json({status: 401, msg: "Please Contact Admin Your account still not active " });
+  }
   if (await bcrypt.compare(password, user.password)) {
     const token = jwt.sign({ email: user.email }, JWT_SECRET, {
       expiresIn: 86400,

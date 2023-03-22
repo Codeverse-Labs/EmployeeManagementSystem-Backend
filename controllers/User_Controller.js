@@ -30,13 +30,13 @@ exports.delete=(async(req, res) => {
 //get all
 exports.getAll=(async(req, res) => {
   // Pagination parameters
-  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 1;
   const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
-  const totalPages = Math.ceil(await users.countDocuments() / limit);
+  const totalPages = Math.ceil(await users.countDocuments({role: { $ne: 'pending' }}) / limit);
 
-   users.find((err, doc) => {
+   users.find({role: { $ne: 'pending' }},(err, doc) => {
     const newPayload = {
       docs: doc,
       totalPages: totalPages
@@ -48,6 +48,16 @@ exports.getAll=(async(req, res) => {
     .populate('technologies', 'name')
     .skip(page * limit)
     .limit(limit);
+});
+
+//get all
+exports.getAllForAdmin=(async(req, res) => {
+   users.find((err, doc) => {
+    ResponseService.generalPayloadResponse(err, doc, res);
+  })
+    .sort({ createdAt: -1 })
+    .populate('designation', 'name')
+    .populate('technologies', 'name')
 });
 
 //get all by designation

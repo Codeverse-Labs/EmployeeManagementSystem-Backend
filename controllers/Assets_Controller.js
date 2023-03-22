@@ -90,19 +90,11 @@ exports.getAllByType = async function (req, res) {
 //get all by assign person
 exports.getByUserId = async function (req, res) {
     const id = req.params.id;
-
-    // Pagination parameters
-    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
-    const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
-
-
-    const totalPages = Math.ceil(await assets.countDocuments({ assignPerson: id }) / limit);
     const assetsCount = Math.ceil(await assets.countDocuments({ assignPerson: id }) );
 
     assets.find({ assignPerson: id }, (err, doc) => {
         const newPayload = {
             docs: doc,
-            totalPages: totalPages,
             assetsCount: assetsCount
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
@@ -110,6 +102,4 @@ exports.getByUserId = async function (req, res) {
         .sort({ createdAt: -1 })
         .populate('assignPerson', 'name email imageurl')
         .populate('type', 'name')
-        .skip(page * limit)
-        .limit(limit);
 }
