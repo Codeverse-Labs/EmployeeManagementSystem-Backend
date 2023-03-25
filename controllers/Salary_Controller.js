@@ -16,14 +16,12 @@ exports.create = (async (req, res) => {
         const basic = user.salary;
         const employee = user._id;
         const newSalary = {employee, basic, usDollerValue, salaryDate};
-        console.log(newSalary);
-        new salary(newSalary).save((err, doc) => {
+        new salary(newSalary).save((err) => {
             if(err){
                 ResponseService.generalResponse(err, res, "salary list not created successfully");
             }
         });
     });
-    res.
     ResponseService.generalResponse(null, res, "salary list created successfully");
 });
 
