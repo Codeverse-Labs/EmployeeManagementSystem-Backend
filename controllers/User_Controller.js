@@ -3,22 +3,6 @@ const cloudinary = require('cloudinary').v2;
 const users = require('../models/User')
 const ResponseService = require("../utils/RresponseService"); // Response service
 
-
-//upload user image 
-exports.uploadImg = (async (req, res) => {
-    try {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "EMS",
-        resource_type: 'auto'
-    })
-      res.json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(500).send('Server error');
-    }
-  
-});
-
 // Update
 exports.update = (async (req, res) => {
   users.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
