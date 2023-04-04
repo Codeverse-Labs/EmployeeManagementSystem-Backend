@@ -1,6 +1,13 @@
 const app = require('express');
 const router = app.Router();
 
+//Imports
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const storage = multer.diskStorage({})
+let upload = multer({storage})
+
+
 // Auth middleware
 const CheckAuth = require('../middleware/AuthMiddleware')
 
@@ -9,6 +16,10 @@ const userController = require('../controllers/User_Controller')
 
 // Update
 router.put("/:id", async (req, res) => userController.update(req, res));
+
+// Upload Image.
+router.post("/update/image",upload.single('image'), async (req, res) => userController.uploadImg(req, res));
+
 
 // Delete
 router.put("/delete/:id",CheckAuth, async (req, res) =>userController.delete(req, res));

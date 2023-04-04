@@ -9,6 +9,19 @@ const app = express();
 const connectDB = require('./config/db');
 connectDB();
 
+//connecting to cloudinary
+const cloudinary = require('cloudinary').v2;
+const https = require('https');
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_API_CLOUD,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+    httpsAgent: new https.Agent({
+        rejectUnauthorized: false,
+    }),
+});
+
 const morgan = require("morgan");
 app.use(morgan("dev")); // configire morgan
 
