@@ -42,7 +42,7 @@ exports.getAll = (async (req, res) => {
     }
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
-    .sort({ name: -1 })
+    .sort({ name: 1 })
     .populate('designation', 'name')
     .populate('technologies', 'name')
     .skip(page * limit)
@@ -54,7 +54,7 @@ exports.getAllForAdmin = (async (req, res) => {
   users.find((err, doc) => {
     ResponseService.generalPayloadResponse(err, doc, res);
   })
-    .sort({ createdAt: -1 })
+    .sort({ name: 1 })
     .populate('designation', 'name')
     .populate('technologies', 'name')
 });
@@ -64,7 +64,7 @@ exports.getAllByDesignation = async function (req, res) {
   const designation = req.params.designation;
 
   // Pagination parameters
-  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 5;
   const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
@@ -77,7 +77,7 @@ exports.getAllByDesignation = async function (req, res) {
     }
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
-    .sort({ name: -1 })
+    .sort({ name: 1 })
     .populate('designation', 'name')
     .populate('technologies', 'name')
     .skip(page * limit)
@@ -89,7 +89,7 @@ exports.getAllByTechnology = async function (req, res) {
   const technology = req.params.technology;
 
   // Pagination parameters
-  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 5;
   const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
@@ -102,7 +102,7 @@ exports.getAllByTechnology = async function (req, res) {
     }
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
-    .sort({ name: -1 })
+    .sort({ name: 1 })
     .populate('designation', 'name')
     .populate('technologies', 'name')
     .skip(page * limit)
@@ -113,8 +113,8 @@ exports.getAllByTechnology = async function (req, res) {
 exports.searchAllByName = async function (req, res) {
   const searchTerm = req.params.searchTerm;
 
-  const limit = req.query.limit ? parseInt(req.query.limit) : 10;
-  const page = req.query.page ? parseInt(req.query.page) : 0;
+  const limit = req.query.limit ? parseInt(req.query.limit) : 5;
+  const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 
   const totalPages = Math.ceil(await users.countDocuments({ name: { $regex: searchTerm, $options: 'i' } }) / limit);
@@ -126,7 +126,7 @@ exports.searchAllByName = async function (req, res) {
     }
     ResponseService.generalPayloadResponse(err, newPayload, res);
   })
-    .sort({ name: -1 })
+    .sort({ name: 1 })
     .populate('designation', 'name')
     .populate('technologies', 'name')
     .skip(page * limit)
