@@ -2,6 +2,24 @@
 const cloudinary = require('cloudinary').v2;
 const users = require('../models/User')
 const ResponseService = require("../utils/RresponseService"); // Response service
+const bcrypt = require("bcryptjs"); // Bcrypt for hashing
+
+// Update
+exports.updatePassword = (async (req, res) => {
+
+  const { password, newpassword } = req.body;
+  const user = await users.findById(req.params.id);
+  const encryptedPassword = await bcrypt.hash(newpassword, 10);
+
+  if (await bcrypt.compare(password, user.password)) {
+    let newuser = { password: encryptedPassword }
+    users.findByIdAndUpdate(req.params.id, newuser, (err, doc) => {
+      ResponseService.generalPayloadResponse(err, doc, res, "user updated successfully");
+    });
+  }else{  
+    return res.json({ status: 400, msg: "Invalid Credentials" });
+  }
+});
 
 // Update
 exports.update = (async (req, res) => {
@@ -17,6 +35,7 @@ exports.getById = (async (req, res) => {
   })
     .populate('designation', 'name')
     .populate('technologies', 'name')
+    .populate('reportPerson', 'name')
 });
 
 // Soft Delete
