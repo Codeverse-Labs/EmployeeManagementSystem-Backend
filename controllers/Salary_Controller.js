@@ -12,7 +12,6 @@ exports.create = (async (req, res) => {
 
     const users = await user.find();
     users.forEach(async (user) => {
-        console.log(user);
         const basic = user.salary;
         const employee = user._id;
         const designation = user.designation;
@@ -85,7 +84,7 @@ exports.getByUserId = async function (req, res) {
     const id = req.params.id;
 
     // Pagination parameters
-    const limit = req.query.limit ? parseInt(req.query.limit) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 12;
     const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
 
 

@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 exports.signUp = async function (req, res) {
   const { name, email, password } = req.body;
   if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-    return res.status(422).json({ error: "Invalid Email!" });
+    return res.json({ status: 422, msg: "Invalid Email!" });
   }
   const encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -72,7 +72,7 @@ exports.getUserDetails = async (req, res) => {
     }
 
     const useremail = user.email;
-    User.findOne({ email: useremail })
+    User.findOne({ email: useremail }).populate('designation', 'name').populate('reportPerson', 'name')
       .then((data) => {
         res.send({ status: "ok", data: data });
       })
