@@ -51,15 +51,24 @@ exports.delete = (async (req, res) => {
 //get all 
 exports.getAll = async function (req, res) {
 
+    // Pagination parameters
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
+
+    const totalPages = Math.ceil(await salary.countDocuments() / limit);
+
     salary.find( (err, doc) => {
         const newPayload = {
             docs: doc,
+            totalPages: totalPages,
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
         .sort({ salaryDate: -1 })
         .populate('employee', 'name email imageurl')
         .populate('designation', 'name')
+        .skip(page * limit)
+        .limit(limit);
         
 }
 
@@ -67,16 +76,24 @@ exports.getAll = async function (req, res) {
 exports.getBydate = async function (req, res) {
     const date = req.params.date;
 
+    // Pagination parameters
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    const page = req.query.page ? parseInt(req.query.page) - 1 : 0;
+
+    const totalPages = Math.ceil(await salary.countDocuments({  salaryDate: date }) / limit);
 
     salary.find({ salaryDate: date}, (err, doc) => {
         const newPayload = {
-            docs: doc,
+            docs: doc,            
+            totalPages: totalPages,
         }
         ResponseService.generalPayloadResponse(err, newPayload, res);
     })
         .sort({ salaryDate: -1 })
         .populate('employee', 'name email imageurl')
         .populate('designation', 'name')
+        .skip(page * limit)
+        .limit(limit);
 }
 
 //get all by employee

@@ -14,7 +14,7 @@ exports.updatePassword = (async (req, res) => {
   if (await bcrypt.compare(password, user.password)) {
     let newuser = { password: encryptedPassword }
     users.findByIdAndUpdate(req.params.id, newuser, (err, doc) => {
-      ResponseService.generalPayloadResponse(err, doc, res, "user updated successfully");
+      ResponseService.generalPayloadResponse(err, doc, res, "password updated successfully");
     });
   }else{  
     return res.json({ status: 400, msg: "Invalid Credentials" });
