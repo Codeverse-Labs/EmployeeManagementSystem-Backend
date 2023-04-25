@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 //Imports
 const salary = require('../models/Salary')
 const user = require('../models/User')
