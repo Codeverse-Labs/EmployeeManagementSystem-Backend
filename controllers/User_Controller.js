@@ -1,5 +1,4 @@
 //Imports
-const cloudinary = require('cloudinary').v2;
 const users = require('../models/User')
 const ResponseService = require("../utils/RresponseService"); // Response service
 const bcrypt = require("bcryptjs"); // Bcrypt for hashing
