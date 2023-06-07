@@ -1,6 +1,7 @@
 const User = require('../models/User'); // User model
 const jwt = require("jsonwebtoken"); // JWT for tokens
 const bcrypt = require("bcryptjs"); // Bcrypt for hashing
+const nodemailer = require("nodemailer");// Nodemailer for sending emails
 const ResponseService = require('../utils/RresponseService')
 
 
@@ -81,3 +82,70 @@ exports.getUserDetails = async (req, res) => {
       });
   } catch (error) { }
 }
+
+
+//forgot password mail
+exports.getForgetPasswordMail = async (req, res) => {
+  const email = req.body.email;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.json({ status: 404, msg: "User Not found" });
+  }
+
+  // sending email for users
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PASS
+    }
+  });
+
+  const mailOptions = {
+    from: process.env.NODEMAILER_EMAIL,
+    to: email,
+    subject: "Forget Password",
+    html: `
+    <body style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px;">
+     <table style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+        <tr>
+            <td>
+                <h2 style="color: #333333;">Forgot Password</h2>
+                <p style="color: #666666;">Dear ${user.name},</p>
+                <p style="color: #666666;">We received a request to reset your password. If you did not make this request, please ignore this email.</p>
+                <p style="color: #666666;">To reset your password, click the button below:</p>
+                <p style="text-align: center; margin-top: 30px;">
+                    <a href="http://localhost:8080/forgetPassword/${user._id}" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 3px;">Reset Password</a>
+                </p>
+                <p style="color: #666666;">If the above button does not work, you can copy and paste the following link into your web browser:</p>
+                <p style="color: #666666; margin-bottom: 30px;">http://localhost:8080/forgetPassword/${user._id}</p>
+                <p style="color: #666666;">Thank you,<br>
+                sakya thilakarathana<br>
+                Hasthiya IT.</p>
+            </td>
+        </tr>
+      </table>
+    </body>
+    `
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      return res.json({ status: 200, msg: "Check your mail" });
+    }
+  });
+}
+
+// forget password
+exports.setForgetPassword = (async (req, res) => {
+
+  const { password } = req.body;
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  const newuser = { password: encryptedPassword }
+  User.findByIdAndUpdate(req.params.id, newuser, (err, doc) => {
+    ResponseService.generalPayloadResponse(err, doc, res, "password updated successfully");
+  });
+});
