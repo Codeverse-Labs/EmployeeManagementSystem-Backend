@@ -27,11 +27,6 @@ exports.updatePassword = (async (req, res) => {
       } else if (/[0-9]/.test(char)) {
         hasNumber = true;
       }
-      
-      // If both letter and number are found, return true
-      if (hasLetter && hasNumber) {
-        return true;
-      }
     }
   
     if (!(hasLetter && hasNumber)) {
