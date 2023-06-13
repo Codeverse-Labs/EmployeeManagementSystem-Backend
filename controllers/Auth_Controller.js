@@ -13,6 +13,27 @@ exports.signUp = async function (req, res) {
   if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
     return res.json({ status: 422, msg: "Invalid Email!" });
   }
+  if (password.length < 8) {
+    return res.json({ status: 422, msg: "Password should consist at least 8 characters including letters and numbers!" });
+  }
+  
+  // Check if password contains at least one letter and one number
+  var hasLetter = false;
+  var hasNumber = false;
+  for (var i = 0; i < password.length; i++) {
+    var char = password[i];
+    
+    if (/[a-zA-Z]/.test(char)) {
+      hasLetter = true;
+    } else if (/[0-9]/.test(char)) {
+      hasNumber = true;
+    }
+  }
+
+  if (!(hasLetter && hasNumber)) {
+    return res.json({ status: 422, msg: "Password should consist at least 8 characters including letters and numbers!" });
+  }
+
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   const oldUser = await User.findOne({ email });
@@ -143,6 +164,33 @@ exports.getForgetPasswordMail = async (req, res) => {
 exports.setForgetPassword = (async (req, res) => {
 
   const { password } = req.body;
+
+  if (password.length < 8) {
+    return res.json({ status: 422, msg: "Password should consist at least 8 characters including letters and numbers!" });
+  }
+  
+  // Check if password contains at least one letter and one number
+  var hasLetter = false;
+  var hasNumber = false;
+  for (var i = 0; i < password.length; i++) {
+    var char = password[i];
+    
+    if (/[a-zA-Z]/.test(char)) {
+      hasLetter = true;
+    } else if (/[0-9]/.test(char)) {
+      hasNumber = true;
+    }
+    
+    // If both letter and number are found, return true
+    if (hasLetter && hasNumber) {
+      return true;
+    }
+  }
+
+  if (!(hasLetter && hasNumber)) {
+    return res.json({ status: 422, msg: "Password should consist at least 8 characters including letters and numbers!" });
+  }
+  
   const encryptedPassword = await bcrypt.hash(password, 10);
   const newuser = { password: encryptedPassword }
   User.findByIdAndUpdate(req.params.id, newuser, (err, doc) => {
