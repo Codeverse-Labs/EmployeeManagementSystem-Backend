@@ -19,4 +19,7 @@ router.put('/forgetpassword/password/:id', authController.setForgetPassword);
 // get User Details
 router.post('/details', authController.getUserDetails);
 
+// verify mail
+router.put("/:id", async (req, res) => authControllerController.update(req, res));
+
 module.exports = router;
