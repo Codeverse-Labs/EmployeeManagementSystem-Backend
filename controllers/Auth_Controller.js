@@ -136,10 +136,10 @@ exports.getForgetPasswordMail = async (req, res) => {
                 <p style="color: #666666;">We received a request to reset your password. If you did not make this request, please ignore this email.</p>
                 <p style="color: #666666;">To reset your password, click the button below:</p>
                 <p style="text-align: center; margin-top: 30px;">
-                    <a href="http://localhost:8080/forgetPassword/${user._id}" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 3px;">Reset Password</a>
+                    <a href="https://employee-management-system-flax.vercel.app/forgetPassword/${user._id}" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 3px;">Reset Password</a>
                 </p>
                 <p style="color: #666666;">If the above button does not work, you can copy and paste the following link into your web browser:</p>
-                <p style="color: #666666; margin-bottom: 30px;">http://localhost:8080/forgetPassword/${user._id}</p>
+                <p style="color: #666666; margin-bottom: 30px;">https://employee-management-system-flax.vercel.app/forgetPassword/${user._id}</p>
                 <p style="color: #666666;">Thank you,<br>
                 sakya thilakarathana<br>
                 Hasthiya IT.</p>
